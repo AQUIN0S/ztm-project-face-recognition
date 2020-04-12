@@ -1,0 +1,18 @@
+nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+a {
+    padding: 0.2rem 0rem;
+    margin: 0.8rem 1rem;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 0.1rem solid black;
+}
+
+a:hover {
+    opacity: 0.7;
+}
