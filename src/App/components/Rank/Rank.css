@@ -1,0 +1,20 @@
+.rankWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.description {
+    color: white;
+    font-size: 1rem;
+}
+
+.emphasis {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.halfMargin {
+    margin: 0.2rem;
+}

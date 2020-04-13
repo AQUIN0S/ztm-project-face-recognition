@@ -1,0 +1,11 @@
+.logo {
+    width: fit-content;
+    height: fit-content;
+    background: linear-gradient(250deg, rgb(250, 100, 230), aqua);
+}
+
+.logo-wrapper {
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+}

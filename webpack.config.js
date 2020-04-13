@@ -30,6 +30,12 @@ module.exports = {
                 use: [
                     'file-loader'
                 ]
+            },
+            {
+                test: /\.png$/,
+                use: [
+                    'file-loader'
+                ]
             }
         ]
     },

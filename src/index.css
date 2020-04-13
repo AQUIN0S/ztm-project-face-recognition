@@ -25,11 +25,15 @@
 body {
     margin: 0;
     padding: 0;
+    background: linear-gradient(89deg, #FF5EDF 0%, #04C8DE 100%);
+    width: 100%;
 }
 
 :root {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     font-size: 20px;
     font-family: "Open Sans";
     box-sizing: border-box;
-    width: 100%;
 }
