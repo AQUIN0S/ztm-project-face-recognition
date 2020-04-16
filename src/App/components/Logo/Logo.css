@@ -2,6 +2,7 @@
     width: fit-content;
     height: fit-content;
     background: linear-gradient(250deg, rgb(250, 100, 230), aqua);
+    box-shadow: 5px 5px 10px;
 }
 
 .logo-wrapper {
