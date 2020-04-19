@@ -3,6 +3,12 @@ header {
     justify-content: space-between;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .particles {
     position: fixed;
     top: 0;

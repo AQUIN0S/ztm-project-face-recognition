@@ -1,10 +1,11 @@
-import React, { Component, Fragment, KeyboardEvent, ChangeEvent } from 'react';
+import React, { Component, Fragment, ChangeEvent } from 'react';
 import Particles, { RecursivePartial } from 'react-particles-js';
 import { IOptions } from "tsparticles/dist/Interfaces/Options/IOptions";
 import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import './App.css';
 
 const Clarifai = require('clarifai');
@@ -13,12 +14,18 @@ const clarifai = new Clarifai.App({
     apiKey: "f83d3899096043da8c73f62fc87df2c5"
 });
 
-class App extends Component {
+declare interface AppState {
+    input: string;
+    imageLink: string;
+}
 
-    constructor(props: Readonly<{}>) {
+class App extends Component<{}, AppState> {
+
+    constructor(props: Readonly<AppState>) {
         super(props);
         this.state = {
-            input: ''
+            input: '',
+            imageLink: ''
         }
     }
 
@@ -30,6 +37,15 @@ class App extends Component {
     }
 
     onSubmit = () => {
+        clarifai.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
+            function(response: Response) {
+                console.log(response.rawData.outputs[0].data.regions);
+            },
+            function(err: Error) {
+                console.log(err);
+            }
+        );
+        this.setState({ imageLink: "https://samples.clarifai.com/face-det.jpg" });
         console.log("click");
     }
 
@@ -53,7 +69,7 @@ class App extends Component {
                 <main>
                     <Rank />
                     <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-                    {/* <FaceRecognition /> */}
+                    <FaceRecognition imageLink={this.state.imageLink} />
                 </main>
             </Fragment>
         );

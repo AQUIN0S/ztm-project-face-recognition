@@ -32,7 +32,7 @@ const ImageLinkForm = ({ onInputChange, onSubmit }: ImageLinkFormProps) => {
                 />
                 <button
                     className="detectButton"
-                    onClick={ (event: React.MouseEvent<HTMLButtonElement>): void => {onSubmit()} }
+                    onClick={ (): void => {onSubmit()} }
                 >Detect</button>
             </div>
         </div>
