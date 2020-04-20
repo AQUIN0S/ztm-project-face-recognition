@@ -7,17 +7,17 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import './App.css';
-
-const Clarifai = require('clarifai');
+import Clarifai, { ClarifaiResponse } from 'clarifai';
 
 const clarifai = new Clarifai.App({
     apiKey: "f83d3899096043da8c73f62fc87df2c5"
 });
 
-declare interface AppState {
+interface AppState {
     input: string;
     imageLink: string;
 }
+
 
 class App extends Component<{}, AppState> {
 
@@ -38,7 +38,7 @@ class App extends Component<{}, AppState> {
 
     onSubmit = () => {
         clarifai.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
-            function(response: Response) {
+            function(response: ClarifaiResponse) {
                 console.log(response.rawData.outputs[0].data.regions);
             },
             function(err: Error) {
