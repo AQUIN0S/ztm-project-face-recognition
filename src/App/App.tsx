@@ -16,6 +16,16 @@ const clarifai = new Clarifai.App({
 interface AppState {
     input: string;
     imageLink: string;
+    regions: Array< {
+        region_info: {
+            bounding_box: {
+                top_row: number,
+                left_col: number,
+                bottom_row: number,
+                right_col: number
+            }
+        }
+    } >;
 }
 
 
@@ -25,7 +35,8 @@ class App extends Component<{}, AppState> {
         super(props);
         this.state = {
             input: '',
-            imageLink: ''
+            imageLink: '',
+            regions: []
         }
     }
 
@@ -37,15 +48,18 @@ class App extends Component<{}, AppState> {
     }
 
     onSubmit = () => {
-        clarifai.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
-            function(response: ClarifaiResponse) {
-                console.log(response.rawData.outputs[0].data.regions);
+        this.setState({
+            imageLink: this.state.input,
+            regions: []
+        });
+        clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+            (response: ClarifaiResponse) => {
+                this.setState({ regions: response.rawData.outputs[0].data.regions });
             },
-            function(err: Error) {
+            (err: Error) => {
                 console.log(err);
             }
         );
-        this.setState({ imageLink: "https://samples.clarifai.com/face-det.jpg" });
         console.log("click");
     }
 
@@ -69,7 +83,7 @@ class App extends Component<{}, AppState> {
                 <main>
                     <Rank />
                     <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-                    <FaceRecognition imageLink={this.state.imageLink} />
+                    <FaceRecognition regions={this.state.regions} imageLink={this.state.imageLink} />
                 </main>
             </Fragment>
         );

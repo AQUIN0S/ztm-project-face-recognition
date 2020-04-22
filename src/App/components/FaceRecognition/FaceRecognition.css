@@ -1,5 +1,9 @@
-img.faceImage {
+div.imageWrapper {
     margin: 1rem;
+}
+
+img.faceImage {
+    margin: 0;
     width: 20rem;
     max-width: 60vw;
     height: auto;
