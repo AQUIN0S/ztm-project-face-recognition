@@ -3,7 +3,7 @@ nav {
     width: fit-content;
 }
 
-a {
+nav span {
     padding: 0.2rem 0rem;
     margin: 0 1rem;
     cursor: pointer;
@@ -16,6 +16,6 @@ a {
     justify-self: flex-end;
 }
 
-a:hover {
+nav span:hover {
     opacity: 0.7;
 }

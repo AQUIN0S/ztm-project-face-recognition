@@ -6,6 +6,7 @@ import Rank from './components/Rank/Rank';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Signin from './components/Forms/Signin/Signin';
 import './App.css';
 import Clarifai, { ClarifaiResponse } from 'clarifai';
 
@@ -26,6 +27,8 @@ interface AppState {
             }
         }
     } >;
+    route: string;
+    isSignedIn: boolean;
 }
 
 
@@ -36,7 +39,9 @@ class App extends Component<{}, AppState> {
         this.state = {
             input: '',
             imageLink: '',
-            regions: []
+            regions: [],
+            route: 'signin',
+            isSignedIn: false
         }
     }
 
@@ -55,12 +60,13 @@ class App extends Component<{}, AppState> {
         clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
             (response: ClarifaiResponse) => {
                 this.setState({ regions: response.rawData.outputs[0].data.regions });
-            },
-            (err: Error) => {
-                console.log(err);
             }
-        );
+        ).catch((err: Error) => {console.log(err)});
         console.log("click");
+    }
+
+    onRouteChange = (route: string) => {
+        this.setState({route: route});
     }
 
     render() {
@@ -78,12 +84,18 @@ class App extends Component<{}, AppState> {
                 <Particles className="particles" params={particlesOptions} />
                 <header style={{margin: 1 + "rem"}}>
                     <Logo />
-                    <Navigation />
+                    <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange} />
                 </header>
                 <main>
-                    <Rank />
-                    <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-                    <FaceRecognition regions={this.state.regions} imageLink={this.state.imageLink} />
+                    {
+                        this.state.route === 'signin' ?
+                        <Signin onRouteChange={this.onRouteChange} /> :
+                        <Fragment>
+                            <Rank />
+                            <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
+                            <FaceRecognition regions={this.state.regions} imageLink={this.state.imageLink} />
+                        </Fragment>
+                    }
                 </main>
             </Fragment>
         );

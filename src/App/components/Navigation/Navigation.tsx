@@ -1,10 +1,19 @@
 import React from 'react';
 import './Navigation.css';
 
-const Navigation = () => {
-    return (
+interface NavigationProps {
+    isSignedIn: boolean;
+    onRouteChange: Function;
+}
+
+const Navigation = ({ isSignedIn, onRouteChange }: NavigationProps) => {
+    return isSignedIn ? (
         <nav>
-            <a href="#">Sign Out</a>
+            <span onClick={() => {onRouteChange('signin')}} >Sign Out</span>
+        </nav>
+    ) : (
+        <nav>
+            <span onClick={() => {onRouteChange('signin')}} >Sign In</span>
         </nav>
     );
 }

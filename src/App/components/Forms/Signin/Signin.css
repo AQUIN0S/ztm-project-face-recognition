@@ -1,0 +1,48 @@
+fieldset {
+    border: none;
+    font-family: inherit;
+    position: relative;
+}
+
+.signinForm {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.formGrid {
+    display: grid;
+    grid-template-columns: auto minmax(15rem, 1fr);
+    align-items: center;
+    gap: 1rem;
+}
+
+.signinForm input[type=password],input[type=email] {
+    background-color: blue;
+    color: white;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    border: 2px solid grey;
+    padding: 0.5rem;
+}
+
+.signinForm button {
+    font-size: 1rem;
+    font: inherit;
+    background-color: darkblue;
+    margin: 1rem 0;
+    align-self: flex-end;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    outline: none;
+    border: 3px solid grey;
+}
+
+#signUp legend {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
