@@ -14,6 +14,7 @@ const Navigation = ({ isSignedIn, onRouteChange }: NavigationProps) => {
     ) : (
         <nav>
             <span onClick={() => {onRouteChange('signin')}} >Sign In</span>
+            <span onClick={() => {onRouteChange('register')}} >Register</span>
         </nav>
     );
 }

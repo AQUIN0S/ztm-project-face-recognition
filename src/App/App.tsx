@@ -7,6 +7,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Forms/Signin/Signin';
+import Register from './components/Forms/Register/Register'
 import './App.css';
 import Clarifai, { ClarifaiResponse } from 'clarifai';
 
@@ -66,10 +67,15 @@ class App extends Component<{}, AppState> {
     }
 
     onRouteChange = (route: string) => {
-        this.setState({route: route});
+        this.setState({
+            isSignedIn: route === 'home' ? true : false,
+            route: route
+        });
     }
 
     render() {
+
+        const { imageLink, regions, route, isSignedIn } = this.state;
 
         const particlesOptions: RecursivePartial<IOptions> = {
             particles: {
@@ -79,26 +85,64 @@ class App extends Component<{}, AppState> {
             }
         }
 
-        return (
-            <Fragment>
-                <Particles className="particles" params={particlesOptions} />
-                <header style={{margin: 1 + "rem"}}>
-                    <Logo />
-                    <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange} />
-                </header>
-                <main>
-                    {
-                        this.state.route === 'signin' ?
-                        <Signin onRouteChange={this.onRouteChange} /> :
-                        <Fragment>
-                            <Rank />
-                            <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-                            <FaceRecognition regions={this.state.regions} imageLink={this.state.imageLink} />
-                        </Fragment>
-                    }
-                </main>
-            </Fragment>
-        );
+        switch (route) {
+            case ('home'):
+                return (
+                    <Fragment>
+                        <Particles className="particles" params={particlesOptions} />
+                        <header>
+                            <Logo />
+                            <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+                        </header>
+                        <main>
+                            <Fragment>
+                                <Rank />
+                                <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
+                                <FaceRecognition regions={regions} imageLink={imageLink} />
+                            </Fragment>
+                        </main>
+                    </Fragment>
+                );
+
+            case('signin'):
+                return (
+                    <Fragment>
+                        <Particles className="particles" params={particlesOptions} />
+                        <header>
+                            <Logo />
+                            <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+                        </header>
+                        <main>
+                            <Signin onRouteChange={this.onRouteChange} />
+                        </main>
+                    </Fragment>
+                );
+
+            case('register'):
+                return (
+                    <Fragment>
+                        <Particles className="particles" params={particlesOptions} />
+                        <header>
+                            <Logo />
+                            <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+                        </header>
+                        <main>
+                            <Register onRouteChange={this.onRouteChange} />
+                        </main>
+                    </Fragment>
+                );
+            default:
+                return (
+                    <Fragment>
+                        <Particles className="particles" params={particlesOptions} />
+                        <header>
+                            <Logo />
+                            <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+                        </header>
+                    </Fragment>
+                );
+
+        }
     }
 }
 

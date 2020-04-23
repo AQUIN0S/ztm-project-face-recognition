@@ -7,21 +7,24 @@ interface SigninProps {
 
 const Signin = (props: SigninProps) => {
     return (
-        <form action="">
-            <fieldset id="signUp">
+        <div>
+            <fieldset>
                 <legend>Sign In</legend>
-                <div className="signinForm">
+                <div className="userForm">
                     <div className="formGrid">
                         <label htmlFor="email">Email:</label>
-                        <input type="email" id="email" name="email" />
+                        <input type="email" id="signinEmail" name="email" />
                         <label htmlFor="password">Password:</label>
-                        <input type="password" name="password" id="password" />
+                        <input type="password" name="password" id="signinPassword" />
                     </div>
-                <button type="submit" onClick={() => {props.onRouteChange('home')}}>Sign In</button>
+                    <div className="submitForm">
+                        <span className="link" onClick={() => {props.onRouteChange('register')}}>Register</span>
+                        <button type="submit" onClick={() => {props.onRouteChange('home')}}>Sign In</button>
+                    </div>
                 </div>
                 
             </fieldset>
-        </form>
+        </div>
     );
 }
 
