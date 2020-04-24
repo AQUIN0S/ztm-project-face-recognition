@@ -73,6 +73,13 @@ class App extends Component<{}, AppState> {
         });
     }
 
+    componentDidMount() {
+        fetch('http://localhost:3000')
+            .then(response => response.json())
+            .then(console.log)
+            .catch(console.log);
+    }
+
     render() {
 
         const { imageLink, regions, route, isSignedIn } = this.state;
