@@ -8,7 +8,8 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: 'Face Recognition'
+            title: 'Face Recognition',
+            favicon: './favicon.png'
         })
     ],
     module: {

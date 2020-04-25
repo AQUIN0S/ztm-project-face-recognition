@@ -15,8 +15,16 @@ const clarifai = new Clarifai.App({
     apiKey: "f83d3899096043da8c73f62fc87df2c5"
 });
 
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    entries: number;
+    joined: Date;
+}
+
 interface AppState {
-    input: string;
+    input: string; 
     imageLink: string;
     regions: Array< {
         region_info: {
@@ -30,6 +38,7 @@ interface AppState {
     } >;
     route: string;
     isSignedIn: boolean;
+    user: User
 }
 
 
@@ -42,7 +51,14 @@ class App extends Component<{}, AppState> {
             imageLink: '',
             regions: [],
             route: 'signin',
-            isSignedIn: false
+            isSignedIn: false,
+            user: {
+                id: null,
+                name: '',
+                email: '',
+                entries: null,
+                joined: null
+            }
         }
     }
 
@@ -70,6 +86,14 @@ class App extends Component<{}, AppState> {
         this.setState({
             isSignedIn: route === 'home' ? true : false,
             route: route
+        });
+    }
+
+    loadUser = (data: User) => {
+        this.setState({
+            user: data
+        }, () => {
+            console.log(`User loaded: ${JSON.stringify(this.state.user)}`);
         });
     }
 
@@ -134,7 +158,7 @@ class App extends Component<{}, AppState> {
                             <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
                         </header>
                         <main>
-                            <Register onRouteChange={this.onRouteChange} />
+                            <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
                         </main>
                     </Fragment>
                 );
