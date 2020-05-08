@@ -1,16 +1,24 @@
 import React from 'react';
 import './Rank.css';
+import { User } from '../../App';
 
-const Rank = () => {
+interface RankProps {
+    user: User;
+}
+
+const Rank = (props: RankProps) => {
     return (
-        <div className="rankWrapper">
-            <p className="description halfMargin">
-                Daniel, your current rank is...
-            </p>
-            <p className="emphasis halfMargin">
-                #5
-            </p>
-        </div>
+        props.user.id
+        ? (
+            <div className="rankWrapper">
+                <p className="description halfMargin">
+                    {props.user.name}, your images entered:
+                </p>
+                <p className="emphasis halfMargin">
+                    {props.user.entries}
+                </p>
+            </div>
+        ) : null
     );
 }
 

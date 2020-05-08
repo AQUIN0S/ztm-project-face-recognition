@@ -15,7 +15,7 @@ const clarifai = new Clarifai.App({
     apiKey: "f83d3899096043da8c73f62fc87df2c5"
 });
 
-interface User {
+export interface User {
     id: number;
     name: string;
     email: string;
@@ -74,11 +74,40 @@ class App extends Component<{}, AppState> {
             imageLink: this.state.input,
             regions: []
         });
-        clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
-            (response: ClarifaiResponse) => {
+        clarifai.models
+            .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+            .then((response: ClarifaiResponse) => {
+                if (response) {
+                    fetch("http://localhost:3000/image", {
+                        method: 'put',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: this.state.user.id
+                        })
+                    })
+                    .then(response => {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            return null;
+                        }
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.setState({
+                                user: { 
+                                    ...this.state.user,
+                                    entries: JSON.parse(data)
+                                }
+                            });
+                        }
+                    });
+                }
                 this.setState({ regions: response.rawData.outputs[0].data.regions });
-            }
-        ).catch((err: Error) => {console.log(err)});
+            })
+            .catch((err: Error) => {console.log(err)});
         console.log("click");
     }
 
@@ -127,7 +156,7 @@ class App extends Component<{}, AppState> {
                         </header>
                         <main>
                             <Fragment>
-                                <Rank />
+                                <Rank user={this.state.user} />
                                 <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
                                 <FaceRecognition regions={regions} imageLink={imageLink} />
                             </Fragment>

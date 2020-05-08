@@ -10,6 +10,7 @@ interface RegisterState {
     email: string;
     password: string;
     name: string;
+    error: string;
 }
 
 class Register extends React.Component<RegisterProps, RegisterState> {
@@ -18,7 +19,8 @@ class Register extends React.Component<RegisterProps, RegisterState> {
         this.state = {
             email: '',
             password: '',
-            name: ''
+            name: '',
+            error: ''
         }
     }
 
@@ -35,7 +37,6 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     }
 
     onSubmitRegister = () => {
-        console.log("Hello?????");
         fetch('http://localhost:3000/register', {
             method: 'post',
             headers: {
@@ -47,7 +48,15 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                 name: this.state.name
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    this.setState({error: 'Something went wrong. Try a different email or make sure all fields are filled.'});
+                    return null;
+                }
+                
+            })
             .then(user => {
                 if (user) {
                     this.props.loadUser(user);
@@ -63,12 +72,15 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     }
 
     render() {
+        const { name, email, password, error } = this.state;
+
         return (
             <div>
                 <fieldset>
                     <legend>Register</legend>
                     <div className="userForm">
                         <div className="formGrid">
+                            {error ? <div className="error">{error}</div> : null}
                             <label htmlFor="name">Name:</label>
                             <input
                                 type="text"
@@ -76,6 +88,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                                 id="registerName"
                                 onChange={this.onNameChange}
                                 onKeyPress={this.onEnterPress}
+                                value={name}
                             />
                             <label htmlFor="email">Email:</label>
                             <input
@@ -84,6 +97,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                                 name="email"
                                 onChange={this.onEmailChange}
                                 onKeyPress={this.onEnterPress}
+                                value={email}
                             />
                             <label htmlFor="password">Password:</label>
                             <input
@@ -92,6 +106,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                                 id="registerPassword"
                                 onChange={this.onPasswordChange}
                                 onKeyPress={this.onEnterPress}
+                                value={password}
                             />
                         </div>
                         <div className="submitForm">

@@ -9,7 +9,8 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Face Recognition',
-            favicon: './favicon.png'
+            favicon: './favicon.png',
+            cache: false
         })
     ],
     module: {
@@ -47,5 +48,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
+    target: 'web',
     mode: "development"
 };

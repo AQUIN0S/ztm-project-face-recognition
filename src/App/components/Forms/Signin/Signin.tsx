@@ -8,6 +8,7 @@ interface SigninProps {
 interface SigninState {
     signInEmail: string;
     signInPassword: string;
+    signInError: string;
 }
 
 class Signin extends React.Component<SigninProps, SigninState> {
@@ -16,7 +17,8 @@ class Signin extends React.Component<SigninProps, SigninState> {
         super(props);
         this.state = {
             signInEmail: '',
-            signInPassword: ''
+            signInPassword: '',
+            signInError: ''
         };
     };
 
@@ -39,12 +41,16 @@ class Signin extends React.Component<SigninProps, SigninState> {
                 password: this.state.signInPassword
             })
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data === 'success') {
-                    this.props.onRouteChange('home')
-                }
-            });
+        .then(response => {
+            if (response.status === 200) {
+                this.setState({signInError: ''})
+                this.props.onRouteChange('home');
+            } else {
+                this.setState({signInError: 'Error logging in. Please check your email and password again'});
+            }
+        });
+        
+        this.setState({signInPassword: ''});
     }
 
     onEnterPress = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -61,6 +67,7 @@ class Signin extends React.Component<SigninProps, SigninState> {
                     <legend>Sign In</legend>
                     <div className="userForm">
                         <div className="formGrid">
+                            {this.state.signInError ? <div className="error">{this.state.signInError}</div> : null}
                             <label htmlFor="email">Email:</label>
                             <input
                                 type="email"
@@ -73,6 +80,7 @@ class Signin extends React.Component<SigninProps, SigninState> {
                             <input
                                 type="password"
                                 name="password"
+                                value={this.state.signInPassword}
                                 id="signinPassword"
                                 onChange={this.onPasswordChange}
                                 onKeyPress={this.onEnterPress}
