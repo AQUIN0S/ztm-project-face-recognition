@@ -36,33 +36,31 @@ class Register extends React.Component<RegisterProps, RegisterState> {
         this.setState({ name: event.target.value });
     }
 
-    onSubmitRegister = () => {
-        fetch('http://localhost:3000/register', {
+    onSubmitRegister = async () => {
+        const { email, password, name } = this.state;
+
+        let response = await fetch('http://localhost:3000/register', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password,
-                name: this.state.name
+                email: email,
+                password: password,
+                name: name
             })
         })
-            .then(response => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    this.setState({error: 'Something went wrong. Try a different email or make sure all fields are filled.'});
-                    return null;
-                }
-                
-            })
-            .then(user => {
-                if (user) {
-                    this.props.loadUser(user);
-                    this.props.onRouteChange('home');
-                }
+
+        if (response.status === 200) {
+            this.props.loadUser(await response.json());
+            this.props.onRouteChange('home');
+        } else {
+            this.setState({
+                error: 'Something went wrong. Try a different email or make sure all fields are filled.',
+                password: ''
             });
+            
+        }
     }
     
     onEnterPress = (event: React.KeyboardEvent<HTMLInputElement>): void => {

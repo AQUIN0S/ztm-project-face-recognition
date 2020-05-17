@@ -173,7 +173,7 @@ class App extends Component<{}, AppState> {
                             <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
                         </header>
                         <main>
-                            <Signin onRouteChange={this.onRouteChange} />
+                            <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
                         </main>
                     </Fragment>
                 );

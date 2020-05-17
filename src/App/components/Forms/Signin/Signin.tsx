@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import './Signin.css';
 
 interface SigninProps {
+    loadUser: Function;
     onRouteChange: Function;
 }
 
@@ -30,8 +31,8 @@ class Signin extends React.Component<SigninProps, SigninState> {
         this.setState({ signInPassword: event.target.value });
     }
 
-    onSubmitSignIn = () => {
-        fetch('http://localhost:3000/signin', {
+    onSubmitSignIn = async () => {
+        const response = await fetch('http://localhost:3000/signin', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,16 +42,17 @@ class Signin extends React.Component<SigninProps, SigninState> {
                 password: this.state.signInPassword
             })
         })
-        .then(response => {
-            if (response.status === 200) {
-                this.setState({signInError: ''})
-                this.props.onRouteChange('home');
-            } else {
-                this.setState({signInError: 'Error logging in. Please check your email and password again'});
-            }
-        });
-        
-        this.setState({signInPassword: ''});
+
+        if (response.status === 200) {
+            this.setState({signInError: ''});
+            this.props.loadUser(await response.json());
+            this.props.onRouteChange('home');
+        } else {
+            this.setState({
+                signInError: 'Error logging in. Please check your email and password again',
+                signInPassword: ''
+            });
+        }
     }
 
     onEnterPress = (event: React.KeyboardEvent<HTMLInputElement>): void => {
